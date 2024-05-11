@@ -1,0 +1,32 @@
+# 忽略所有的node_modules文件夹
+node_modules/
+
+# 忽略所有的编译输出文件
+dist/
+
+# 忽略所有的临时文件
+.tmp/
+
+# 忽略所有的日志文件
+*.log
+
+# 忽略所有的配置文件
+*.config
+
+# 忽略所有的IDE和编辑器生成的文件
+.idea/
+.vscode/
+*.swp
+
+# 忽略所有的依赖管理工具生成的文件
+yarn.lock
+package-lock.json
+
+# 忽略所有的敏感信息文件
+.env
+.env.local
+.env.*.local
+
+# 忽略所有的备份文件
+*.bak
+*.backup

@@ -8,7 +8,7 @@ const port = 3000;
 
 app.get('/', async (req, res) => {
     try {
-        let dataJSON = await readFile('./fixtures/db1.json', 'utf8')
+        let dataJSON = await readFile('./fixtures/db.json', 'utf8')
         res.send(JSON.parse(dataJSON).users)
     } catch (error) {
         res.status(500).json({error})

@@ -1,5 +1,5 @@
 const express = require('express');
-const { utils_readFile, utils_writeFile } = require('../utils/file');
+const { utils_readFile, utils_writeFile } = require('./utils/file');
 
 const app = express();
 const port = 3000;

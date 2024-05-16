@@ -1,6 +1,6 @@
 # vibes
 
-## MongoDB 数据持久化存储
+## 一、MongoDB 数据持久化存储
 
 1. MongoDB 是什么？
 
@@ -76,6 +76,128 @@
   1. 删除一条 `db.[databaseName].deleteOne({age: 16})`
   2. 删除多条 `db.[databaseName].deleteMany({age: 16})`
 
-8. 总结回顾
+8. 请求响应方法
+
+- res.download() // 需要下载的资源
+- res.json() // 将数组或对象转为 json
+- res.redirect() // 重定向
+- res.render() // 渲染静态模板
+- res.status() // 响应状态码
+- res.send() //
+- res.sendStatus() // 相应状态码和数据
+- res.end() // 结束响应
+
+// 这些方法都可以用于链式调佣
+res.download().status(200).josn({ name: 'abc' })
 
 - 安装 MongoDB
+
+## 二、Node - Express 中间件与接口规范
+
+1. Express 中间件是什么？
+   在正常的工作流程中，添加一个额外的处理环节，这个环节不会对整体的工作流程造成影响
+
+2. Express 中间件分类
+
+- 应用程序级别中间件
+
+  ```javascript
+  // 语法
+  const app = express()
+
+  app.use((req, res, next) => {})
+
+  // 处理请求打印日志
+  app.use((req, res, next) => {
+    console.log(`${req.method}, ${req.url}, ${Date.now()}`)
+    next()
+  })
+
+  // 限定请求方法的中间件
+  app.get('/user', (req, res, next) => {})
+
+  // 进一步的请求处理
+  app.get(
+    '/user',
+    (req, res, next) => {
+      console.log(req.method)
+      next()
+    },
+    (req, res, next) => {
+      console.log('进一步的请求处理')
+      next()
+    },
+    (req, res) => {
+      console.log('再一步的请求处理')
+      res.send()
+    }
+  )
+  ```
+
+- 路由级别中间件
+
+  ```javascript
+  // app.js
+  const express = require('express')
+  const router = require('./router')
+  const routerVideo = require('./router/video')
+  const app = express()
+  const PORT = process.env.PORT || 3000
+  //挂载路由
+  app.use('/api', router)
+  app.use('/video', routerVideo)
+
+  // 路由级别
+  app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`)
+  })
+
+  // router/index.js
+  const express = require('express')
+
+  const router = express.Router()
+  router.get('/', (req, res, next) => {
+    console.log(req.method)
+    res.send('/index')
+  })
+
+  router.get('/signin', (req, res) => {
+    console.log(req.method)
+    res.send('/signin')
+  })
+
+  module.exports = router
+
+  // router/video.js
+  const express = require('express')
+
+  const routerVideo = express.Router()
+  routerVideo.get('/', (req, res, next) => {
+    console.log(req.method)
+    res.send('/index')
+  })
+
+  routerVideo.get('/signin', (req, res) => {
+    console.log(req.method)
+    res.send('/signin')
+  })
+
+  module.exports = routerVideo
+
+  // /user/1/video/2，/:[参数名称不能重复]
+  app.get('/api/user/:id/video/:vid', (req, res) => {
+    console.log(req.params)
+    res.send(`${req.method}---${req.url}`)
+  })
+
+  // 路由链式调用
+  app.get('/user', (req, res) => {}).post('/ps', (req, res) => {})
+  ```
+
+- 错误处理中间件
+- 内置中间件
+- 三方中间件
+
+```
+
+```

@@ -1,67 +1,36 @@
-const express = require('express');
-const { utils_readFile, utils_writeFile } = require('./utils/file');
+const express = require('express')
+const router = require('./router')
+const routerVideo = require('./router/video')
+const app = express()
+const PORT = process.env.PORT || 3000
 
-const app = express();
-const port = 3000;
+//挂载路由
+app.use('/api', router)
+app.use('/video', routerVideo)
 
-const baseURL = './fixtures/db.json'
+// //挂载统一处理服务端错误中间件
+// app.use(errorHandler())
 
-// 处理请求体   'content-type': 'application/x-www-form-urlencoded',
-// app.use(express.urlencoded())
-// 处理 'content-type': 'application/json',
-app.use(express.json())
+// /user/1/video/2，/:[参数名称不能重复]
+app.get('/api/user/:id/video/:vid', (req, res) => {
+  // 资源响应
+  res.download() // 需要下载的资源
+  res.json() // 将数组或对象转为json
+  res.redirect() // 重定向
+  res.render() // 渲染静态模板
+  res.status() // 响应状态码
+  res.send() //
+  res.sendStatus() // 相应状态码和数据
+  res.end() // 结束响应
 
-// 查询用户
-app.get('/users', async (req, res) => {
-    try {
-        const userData = await utils_readFile(baseURL)
-        res.send(userData)
-    } catch (error) {
-        res.status(500).json({error})
-    }
-});
-
-// 新增用户
-app.post('/user/add', async (req, res) => {
-    // console.log('header', req.headers) // 通过请求头信息查看内容类型
-    // console.log('req', req.body) // 查看请求体内容
-    if(!req.body) res.status(403).json({error: '缺少用户信息'})
-        
-    const userData = await utils_readFile(baseURL)
-    req.body.id = userData[userData.length - 1].id + 1
-    userData.push(req.body)
-
-    try {
-        const newUserData = await utils_writeFile(baseURL, userData)
-        if(!newUserData) res.status(200).send({message: '添加成功'})
-    } catch (error) {
-        res.status(500).json({error})
-    }
+  //   这些方法都可以用于链式调佣
+  res.download().status(200).josn({ name: 'abc' })
 })
 
-// 修改用户
-app.put('/user/:id', async (req, res) => {
-    const userId = Number(req.params.id)
-    try {
-        const userList = await utils_readFile(baseURL)
-        const isExsit = userList.findIndex(user => user.id === userId)
-        if(!isExsit) res.status(403).json({error: '用户不存在!'})
-        userList[isExsit] = {
-            ...userList[isExsit],
-            ...req.body
-        }
-        const newUserList = utils_writeFile(baseURL, userList)
-        res.status(201).send({
-            message: '修改成功!',
-            data: userList[isExsit]
-        })
-    } catch (error) {
-        
-    }
+// 路由链式调用
+app.get('/user', (req, res) => {}).post('/ps', (req, res) => {})
 
+// 路由级别
+app.listen(PORT, () => {
+  console.log(`Server is running at http://localhost:${PORT}`)
 })
-
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});

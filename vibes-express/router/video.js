@@ -1,14 +1,8 @@
 const express = require('express')
+const videoController = require('../controller/videoController')
 
-const routerVideo = express.Router()
-routerVideo.get('/', (req, res, next) => {
-  console.log(req.method)
-  res.send('/index')
-})
+const router = express.Router()
 
-routerVideo.get('/signin', (req, res) => {
-  console.log(req.method)
-  res.send('/signin')
-})
+router.get('/videoList', videoController.videoList)
 
-module.exports = routerVideo
+module.exports = router

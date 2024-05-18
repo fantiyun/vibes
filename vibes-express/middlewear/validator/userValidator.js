@@ -59,6 +59,14 @@ module.exports.signin = validator([
     .bail()
     .isEmail()
     .withMessage('The email format is not compliant')
+    .bail()
+    .custom(async (email) => {
+      const emailValidate = await User.findOne({ email })
+      console.log('emailValidate', emailValidate)
+      if (!emailValidate) {
+        return Promise.reject('The email address is not registered!')
+      }
+    })
     .bail(),
 
   body('password').notEmpty().withMessage('password is required!').bail(),

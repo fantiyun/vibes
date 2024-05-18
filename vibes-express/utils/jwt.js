@@ -22,7 +22,8 @@ module.exports.verifyToken = async (req, res, next) => {
     sendResponse.error(res, 401, 'Token is required!')
   }
   try {
-    await jwtVerify(token, secret)
+    const data = await jwtVerify(token, secret)
+    req.user = data
     next()
   } catch (error) {
     sendResponse.error(res, 401, 'Invalid token!')

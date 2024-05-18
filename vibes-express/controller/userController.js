@@ -1,6 +1,6 @@
 const { User } = require('../model')
 const sendResponse = require('../utils/sendResponse')
-const { createToken, verifyToken } = require('../utils/jwt')
+const { createToken } = require('../utils/jwt')
 
 // 用户注册
 exports.signup = async (req, res) => {
@@ -37,8 +37,8 @@ exports.signin = async (req, res) => {
 }
 
 exports.watchlists = async (req, res) => {
-  console.log(req.method)
-  res.send('userList')
+  console.log(req.user)
+  res.send(req.user)
 }
 
 exports.userDelete = async (req, res) => {}

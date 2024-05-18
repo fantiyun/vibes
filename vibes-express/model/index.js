@@ -1,8 +1,9 @@
 const mongoose = require('mongoose')
+const { mongoURL } = require('../config/config.default')
 const userSchema = require('./userSchema')
 
 const main = async () => {
-  await mongoose.connect('mongodb://localhost:27017/vibes')
+  await mongoose.connect(mongoURL)
 }
 main()
   .then(() => {

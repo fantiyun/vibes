@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     set: (val) => md5(val), // 使用 md5 把密码加密
+    select: false, // 查询时将该参数剔除
   },
   avatar: {
     type: String,

@@ -2,7 +2,7 @@ const { body } = require('express-validator')
 const validator = require('./errorMiddleware')
 const { User } = require('../../model/index')
 
-module.exports = signup = validator([
+module.exports.signup = validator([
   body('username')
     .notEmpty()
     .withMessage('username is required!')
@@ -50,4 +50,16 @@ module.exports = signup = validator([
       }
     })
     .bail(),
+])
+
+module.exports.signin = validator([
+  body('email')
+    .notEmpty()
+    .withMessage('email is required!')
+    .bail()
+    .isEmail()
+    .withMessage('The email format is not compliant')
+    .bail(),
+
+  body('password').notEmpty().withMessage('password is required!').bail(),
 ])

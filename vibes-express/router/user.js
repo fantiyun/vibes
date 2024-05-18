@@ -1,21 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const { validationResult } = require('express-validator')
-const userConttorller = require('../controller/userController')
+const userContorller = require('../controller/userController')
 const validator = require('../middlewear/validator/userValidator')
-const errorMiddleware = require('../middlewear/validator/errorMiddleware')
 
 router
-  .post(
-    '/signup',
-    // 验证非空中间件
-    validator,
-    // errorMiddleware,
-    userConttorller.signup
-  )
+  // validator: 非空验证
+  .post('/signup', validator.signup, userContorller.signup)
+  .post('/signin', validator.signin, userContorller.signin)
 
-  // .post('/signup', userConttorller.signup)
-  .get('/list', userConttorller.userList)
-  .delete('/', userConttorller.userDelete)
+  .get('/watchlists', userContorller.watchlists)
+  .delete('/', userContorller.userDelete)
 
 module.exports = router

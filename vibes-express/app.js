@@ -10,6 +10,7 @@ app.use(express.json())
 app.use(cors())
 // 日志记录
 app.use(morgan('dev'))
+
 // 应用路由
 app.use('/api/v1', router)
 

@@ -19,7 +19,7 @@ module.exports.verifyToken = async (req, res, next) => {
   token = token?.split(' ')[1] || null
 
   if (!token) {
-    sendResponse.error(res, 401, 'Token is required!')
+    sendResponse.error(res, 401, 'The user is not authenticated')
   }
   try {
     const data = await jwtVerify(token, secret)

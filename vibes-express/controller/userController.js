@@ -1,6 +1,6 @@
 const { User } = require('../model')
 const sendResponse = require('../utils/sendResponse')
-const { createToken } = require('../utils/jwt')
+const { createToken, verifyToken } = require('../utils/jwt')
 
 // 用户注册
 exports.signup = async (req, res) => {
@@ -20,6 +20,7 @@ exports.signin = async (req, res) => {
    */
   // 链接数据库进行查询
   let signinValidate = await User.findOne(req.body)
+  console.log('signinValidate', signinValidate)
   if (!signinValidate) {
     sendResponse.error(res, 401, 'Wrong email address or password!')
   } else {
@@ -35,10 +36,26 @@ exports.signin = async (req, res) => {
     sendResponse.success(res, signinValidate, 'Login successful!')
   }
 }
-
+// 关注列表
 exports.watchlists = async (req, res) => {
-  console.log(req.user)
   res.send(req.user)
 }
+// 更新用户信息
+exports.update = async (req, res) => {
+  // const updatedData = await User.updateOne(
+  //   { _id: req.user._id },
+  //   { $set: { ...req.body } }
+  // )
 
-exports.userDelete = async (req, res) => {}
+  // 默认返回的是修改前的数据，可以配置 {new: true} 表示更新后的数据
+  const updatedData = await User.findByIdAndUpdate(req.user._id, req.body, {
+    new: true,
+  })
+
+  sendResponse.success(res, updatedData)
+}
+
+exports.userDelete = async (req, res) => {
+  const foundUser = await User.findOne(req.body)
+  consle.log(foundUser)
+}

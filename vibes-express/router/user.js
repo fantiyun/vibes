@@ -10,6 +10,7 @@ router
   .post('/signin', validator.signin, userContorller.signin)
 
   .get('/watchlists', verifyToken, userContorller.watchlists)
+  .put('/update', verifyToken, validator.update, userContorller.update)
   .delete('/', userContorller.userDelete)
 
 module.exports = router
